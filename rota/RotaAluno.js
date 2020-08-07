@@ -9,5 +9,7 @@ rota.post('/aluno',[
     check('cpf','Cpf não pode ser vazio').not().isEmpty(),
     check('curso_id','Curso não pode ser vazio').exists({checkNull:true,checkFalsy:true})
 ],AlunoController.inserir)
+rota.get('/alunos',AlunoController.listaDeAluno)
+rota.get('/alunos/:id',AlunoController.buscarPorId)
 
 module.exports = rota

@@ -30,6 +30,25 @@ class AlunoController {
             }
         }
     }
+
+    async listaDeAluno(req,res){
+        let aluno = await Aluno.listaDeAlunos()
+        if(aluno.status){
+            res.status(200).send(aluno.resultado)
+        } else {
+            res.status(404).json({ errors: aluno.errors })
+        }
+    }
+
+    async buscarPorId(req,res){
+        let id = req.params.id
+        let aluno = await Aluno.buscarPorId(id)
+        if(aluno.status){
+            res.status(200).send(aluno.resultado)
+        } else {
+            res.status(404).json({ errors: aluno.errors })
+        }
+    }
 }
 
 module.exports = new AlunoController()
