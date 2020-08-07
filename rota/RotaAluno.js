@@ -11,5 +11,7 @@ rota.post('/aluno',[
 ],AlunoController.inserir)
 rota.get('/alunos',AlunoController.listaDeAluno)
 rota.get('/alunos/:id',AlunoController.buscarPorId)
+rota.delete('/aluno/:id',AlunoController.deletar)
+rota.post('/aluno/buscar-aluno',AlunoController.buscarPorNome)
 
 module.exports = rota

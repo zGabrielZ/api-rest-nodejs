@@ -50,6 +50,29 @@ class Aluno {
             return { errors: error }
         }
     }
+
+    async deletar(id) {
+        try {
+            await knex.delete().where({id:id}).table('aluno')
+        } catch (error) {
+            return { error: error }
+        }
+    }
+
+    async buscarPorAluno(nome){
+        try {
+            let resultado = await knex.select(['aluno.id as aluno_id','aluno.nome as aluno_nome','aluno.cpf as aluno_cpf','curso.nome as curso_nome'])
+            .where('aluno.nome','like',`%${nome}%`).table('aluno')
+            .innerJoin('curso','aluno.curso_id','curso.id')
+            if(resultado.length > 0){
+                return {status:true,resultado}
+            } else {
+                return {errors:'Curso não encontrado'}
+            }
+        } catch (error) {
+            return { errors: error }
+        }
+    }
 }
 
 module.exports = new Aluno()

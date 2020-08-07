@@ -49,6 +49,27 @@ class AlunoController {
             res.status(404).json({ errors: aluno.errors })
         }
     }
+
+    async deletar(req, res) {
+        let id = req.params.id
+        let aluno = await Aluno.buscarPorId(id)
+        if (aluno.status) {
+            await Aluno.deletar(aluno.resultado.aluno_id)
+            res.status(200).json({ message: 'Deletado com sucesso' })
+        } else {
+            res.status(404).json({ errors: aluno.errors })
+        }
+    }
+
+    async buscarPorNome(req, res) {
+        let nome = req.query.nome
+        let aluno = await Aluno.buscarPorAluno(nome)
+        if (aluno.status) {
+            res.status(200).send(aluno.resultado)
+        } else {
+            res.status(404).json({ errors: aluno.errors })
+        }
+    }
 }
 
 module.exports = new AlunoController()
