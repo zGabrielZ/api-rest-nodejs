@@ -73,6 +73,30 @@ class Aluno {
             return { errors: error }
         }
     }
+
+    async atualizar(id,nome,curso_id){      
+        let aluno = await this.buscarPorId(id)
+        let editarAluno = {} 
+        if(aluno.resultado != undefined){ 
+            if(nome != undefined){
+               editarAluno.nome = nome
+            }
+            if(curso_id != undefined){
+                editarAluno.curso_id = curso_id
+            }
+        } else {
+            return {status:false,errors:curso.errors}
+        }
+
+        try {
+            await knex.where({id:id})
+           .update(editarAluno)
+            .table('aluno')
+            return {status:true}
+        } catch (error) {
+            return {status:false,errors:error}
+        }
+    }
 }
 
 module.exports = new Aluno()

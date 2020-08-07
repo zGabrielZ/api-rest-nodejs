@@ -13,5 +13,9 @@ rota.get('/alunos',AlunoController.listaDeAluno)
 rota.get('/alunos/:id',AlunoController.buscarPorId)
 rota.delete('/aluno/:id',AlunoController.deletar)
 rota.post('/aluno/buscar-aluno',AlunoController.buscarPorNome)
+rota.put('/aluno/:id',[
+    check('nome','Nome não pode ser vazio').not().isEmpty(),
+    check('curso_id','Curso não pode ser vazio').exists({checkNull:true,checkFalsy:true})
+],AlunoController.atualizar)
 
 module.exports = rota

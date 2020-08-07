@@ -70,6 +70,33 @@ class AlunoController {
             res.status(404).json({ errors: aluno.errors })
         }
     }
+
+    async atualizar(req, res) {
+        let id = req.params.id
+        let { nome,curso_id } = req.body
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        let curso = await Curso.buscarPorId(curso_id)
+        let aluno = await Aluno.atualizar(id, nome,curso.resultado.id)
+        if (curso.status) {
+            if(aluno != undefined){
+                if (aluno.status) {
+                    res.status(200).json({ message: 'Atualizado com sucesso' })
+                } else {
+                    res.status(400).json({errors:aluno.errors})
+                }
+            } else {
+                res.status(400).json({ errors: aluno.errors });
+            }
+        } else {
+            res.status(404).json({ errors: curso.errors })
+        }
+
+    }
 }
 
 module.exports = new AlunoController()
