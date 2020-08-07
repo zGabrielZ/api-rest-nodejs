@@ -65,6 +65,7 @@ class Curso {
     async deletar(id) {
         try {
             await knex.delete().where({id:id}).table('curso')
+            return {status:true}
         } catch (error) {
             return { error: error }
         }
