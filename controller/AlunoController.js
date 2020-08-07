@@ -54,8 +54,12 @@ class AlunoController {
         let id = req.params.id
         let aluno = await Aluno.buscarPorId(id)
         if (aluno.status) {
-            await Aluno.deletar(aluno.resultado.aluno_id)
-            res.status(200).json({ message: 'Deletado com sucesso' })
+            let delecao = await Aluno.deletar(aluno.resultado.aluno_id)
+            if(delecao.status){
+                res.status(200).json({ message: 'Deletado com sucesso' })
+            } else {
+                res.status(400).json({ errors: 'Erro ao deletar, pois está relacionado com suas matérias' })
+            }
         } else {
             res.status(404).json({ errors: aluno.errors })
         }

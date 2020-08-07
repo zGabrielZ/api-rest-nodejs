@@ -54,6 +54,7 @@ class Aluno {
     async deletar(id) {
         try {
             await knex.delete().where({id:id}).table('aluno')
+            return {status:true}
         } catch (error) {
             return { error: error }
         }
