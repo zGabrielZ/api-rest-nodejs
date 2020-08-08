@@ -1,6 +1,6 @@
 const knex = require('../bancoDeDados/conexao')
 
-class Curso {
+class Disciplina {
 
     async inserir(nome) {
         try {
@@ -80,4 +80,4 @@ class Curso {
     }
 }
 
-module.exports = new Curso()
+module.exports = new Disciplina()

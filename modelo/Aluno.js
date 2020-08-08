@@ -68,7 +68,7 @@ class Aluno {
             if(resultado.length > 0){
                 return {status:true,resultado}
             } else {
-                return {errors:'Curso não encontrado'}
+                return {errors:'Aluno não encontrado'}
             }
         } catch (error) {
             return { errors: error }
