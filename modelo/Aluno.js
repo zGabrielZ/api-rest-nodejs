@@ -1,6 +1,7 @@
 const knex = require('../bancoDeDados/conexao')
 
 class Aluno {
+    
     async inserir(nome,cpf,curso_id) {
         try {
             await knex.insert({nome,cpf,curso_id}).table('aluno')
