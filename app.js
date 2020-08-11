@@ -8,6 +8,7 @@ const rotaDisciplina = require('./rota/RotaDisciplina')
 const rotaAula = require('./rota/RotaAula')
 const rotaAdmin = require('./rota/RotaAdmin')
 
+
 // config de body parser
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())

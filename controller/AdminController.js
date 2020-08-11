@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken')
 
 const jwtSecret = 'aleatorio'
 
+const nodemail = require('../config-nodemail')
+
+
 class AdminController{
 
     async inserir(req,res){
@@ -21,6 +24,15 @@ class AdminController{
             return res.status(400).json({ errors: 'Já tem este email cadastrado' });
         } else {
             await Admin.inserir(email,senha)
+
+            await nodemail.sendMail({
+                from:'Escola node <testprod846@gmail.com>',
+                to:email,
+                subject:'Cadastro no sistema com sucesso !!',
+                text:`Bem vindo ${email}`,
+            })
+
+
             res.status(200).json({ message: 'Cadastrado com sucesso' })
         }
     }
