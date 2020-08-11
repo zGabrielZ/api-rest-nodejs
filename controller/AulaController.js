@@ -7,18 +7,20 @@ const Disciplina = require("../modelo/Disciplina")
 class AlunoController {
 
     async inserir(req, res) {
-        let { idAluno,idDisciplina,nota1,nota2 } = req.body
+        let { idAluno,idDisciplina,nota1,nota2} = req.body
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
+        let mediaFinal = (nota1 + nota2)/2
+
         let disciplina = await Disciplina.buscarPorId(idDisciplina)
         let aluno = await Aluno.buscarPorId(idAluno)
         if (disciplina.status && aluno.status) {
-            await Aula.inserir(idAluno,idDisciplina,nota1,nota2)
-            res.status(200).json({ message: 'Cadastrado com sucesso' })
+            await Aula.inserir(idAluno,idDisciplina,nota1,nota2,mediaFinal)
+            res.status(200).json({ message: 'Cadastrado com sucesso'})
         } else {
             res.status(404).json({ errors: disciplina.errors,errors2:aluno.errors })
         }

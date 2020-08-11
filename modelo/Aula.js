@@ -2,9 +2,9 @@ const knex = require('../bancoDeDados/conexao')
 
 class Aula {
 
-    async inserir(idAluno, idDisciplina, nota1, nota2) {
+    async inserir(idAluno, idDisciplina, nota1, nota2,media) {
         try {
-            await knex.insert({ idAluno, idDisciplina, nota1, nota2 }).table('aluno_disciplina')
+            await knex.insert({ idAluno, idDisciplina, nota1, nota2,media }).table('aluno_disciplina')
         } catch (error) {
             return { error: error }
         }
@@ -12,7 +12,7 @@ class Aula {
 
     async listaDeAula() {
         try {
-            let resultado = await knex.select(['aluno.nome as aluno_nome', 'disciplina.nome as disciplina_nome', 'aluno_disciplina.nota1 as nota1', 'aluno_disciplina.nota2 as nota2']).table('aluno_disciplina')
+            let resultado = await knex.select(['aluno.nome as aluno_nome', 'disciplina.nome as disciplina_nome', 'aluno_disciplina.nota1 as nota1', 'aluno_disciplina.nota2 as nota2','aluno_disciplina.media as mediaFinal']).table('aluno_disciplina')
                 .innerJoin('disciplina', 'aluno_disciplina.idDisciplina', 'disciplina.id')
                 .innerJoin('aluno', 'aluno_disciplina.idAluno', 'aluno.id')
             if (resultado.length > 0) {
@@ -27,7 +27,7 @@ class Aula {
 
     async buscarPorId(id) {
         try {
-            let resultado = await knex.select(['aluno_disciplina.id as aula_id', 'aluno.nome as aluno_nome', 'disciplina.nome as disciplina_nome', 'aluno_disciplina.nota1 as nota1', 'aluno_disciplina.nota2 as nota2'])
+            let resultado = await knex.select(['aluno_disciplina.id as aula_id', 'aluno.nome as aluno_nome', 'disciplina.nome as disciplina_nome', 'aluno_disciplina.nota1 as nota1', 'aluno_disciplina.nota2 as nota2','aluno_disciplina.media as mediaFinal'])
                 .where({ 'aluno_disciplina.id': id }).table('aluno_disciplina')
                 .innerJoin('disciplina', 'aluno_disciplina.idDisciplina', 'disciplina.id')
                 .innerJoin('aluno', 'aluno_disciplina.idAluno', 'aluno.id')
@@ -52,7 +52,7 @@ class Aula {
 
     async buscarPorAluno(nome) {
         try {
-            let resultado = await knex.select(['aluno_disciplina.id as aula_id', 'aluno.nome as aluno_nome', 'disciplina.nome as disciplina_nome', 'aluno_disciplina.nota1 as nota1', 'aluno_disciplina.nota2 as nota2'])
+            let resultado = await knex.select(['aluno_disciplina.id as aula_id', 'aluno.nome as aluno_nome', 'disciplina.nome as disciplina_nome', 'aluno_disciplina.nota1 as nota1', 'aluno_disciplina.nota2 as nota2','aluno_disciplina.media as mediaFinal'])
             .where('aluno.nome', 'like', `%${nome}%`).table('aluno_disciplina')
             .innerJoin('disciplina', 'aluno_disciplina.idDisciplina', 'disciplina.id')
             .innerJoin('aluno', 'aluno_disciplina.idAluno', 'aluno.id')
@@ -66,7 +66,8 @@ class Aula {
         }
     }
 
-    async atualizar(id,nota1,nota2){      
+    async atualizar(id,nota1,nota2,media){ 
+        media = (nota1 + nota2) / 2     
         let aula = await this.buscarPorId(id)
         let editarAula = {} 
         if(aula.resultado != undefined){ 
@@ -75,6 +76,9 @@ class Aula {
             }
             if(nota2 != undefined){
                 editarAula.nota2 = nota2
+            }
+            if(media != undefined){
+                editarAula.media = media.toFixed(2)
             }
         } else {
             return {status:false,errors:aula.errors}
