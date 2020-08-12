@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator/check")
 const Aluno = require('../modelo/Aluno')
 const Curso = require('../modelo/Curso')
 const validarCpf = require('validar-cpf')
+const ejs = require('ejs')
+const pdf = require('html-pdf')
 
 class AlunoController {
 
@@ -38,6 +40,40 @@ class AlunoController {
         } else {
             res.status(404).json({ errors: aluno.errors })
         }
+    }
+
+
+    async pdfAlunos(req,res){
+
+
+        const options = {
+            format:'A4',
+            border:{
+                right:'8'
+            }
+        }
+
+        await Aluno.listaDeAlunos()
+            .then(alunos=>{
+                ejs.renderFile('./views/gerar-pdf/alunos.ejs',{alunos:alunos.resultado},(err,html)=>{
+                    if(err){
+                        res.status(500).json({errors:'Erro no servidor'})
+                    } else {
+                        pdf.create(html,options).toFile('./uploads/alunos.pdf',(err,response)=>{
+                            if(err){
+                                res.status(400).json({errors:'Erro ao gerar PDF'})
+                            } else {
+                                res.status(200).json({message:'PDF gerado'})
+                            }
+                        })
+                    }
+                })
+            })
+    }
+
+    async downloadPdf(req,res){
+        res.type('pdf')
+        res.download('./uploads/alunos.pdf')
     }
 
     async buscarPorId(req,res){

@@ -1,0 +1,22 @@
+@media(max-width:481px){
+
+    .table thead{
+        display: none;
+	}
+
+	.table, .table tbody, .table tr, .table td{
+		display: block;
+        width: 100%;
+        color: white;
+	}
+	.table tr{
+        margin-bottom:40px;
+        background-color: rgb(96, 96, 109);
+	}
+	.table td{
+		text-align: center;
+		position: relative;
+    }
+
+	
+}

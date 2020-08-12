@@ -1,0 +1,30 @@
+<%- include ("../partials/header.ejs")%>
+
+<body>
+    <div class="container">
+        <br>
+        <div class="card-header">
+            <h1>Lista de alunos</h1>
+            <br>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Curso</th>
+                </thead>
+                <tbody>
+                    <% alunos.forEach(aluno=>{ %>
+                        <tr>
+                            <td><%= aluno.aluno_nome %></td>
+                            <td><%= aluno.aluno_cpf %></td>
+                            <td><%= aluno.curso_nome %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<%- include ("../partials/footer.ejs")%>

@@ -28,5 +28,11 @@ app.use('/',rotaAula)
 // config de rota do admin
 app.use('/',rotaAdmin)
 
+// config de ejs 
+app.set('view engine','ejs')
+// configurando arquivo estaticos 
+app.use(express.static('public'))
+
+
 // config de porta do node
 app.listen(porta,(req,res)=>console.log('Conectado na porta '+porta))

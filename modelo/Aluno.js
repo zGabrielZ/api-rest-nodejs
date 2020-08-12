@@ -1,4 +1,5 @@
 const knex = require('../bancoDeDados/conexao')
+const pdf = require('html-pdf')
 
 class Aluno {
     
@@ -35,6 +36,10 @@ class Aluno {
         } catch (error) {
             return { errors: error }
         }
+    }
+
+    async gerarPdfAlunos(){
+        
     }
     
     async buscarPorId(id){

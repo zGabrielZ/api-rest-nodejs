@@ -18,5 +18,7 @@ rota.put('/aluno/:id',[
     check('nome','Nome não pode ser vazio').not().isEmpty(),
     check('curso_id','Curso não pode ser vazio').exists({checkNull:true,checkFalsy:true})
 ],auth,AlunoController.atualizar)
+rota.get('/pdf-alunos',AlunoController.pdfAlunos)
+rota.get('/downloads',AlunoController.downloadPdf)
 
 module.exports = rota
