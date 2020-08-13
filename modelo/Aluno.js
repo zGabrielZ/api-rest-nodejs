@@ -3,9 +3,9 @@ const pdf = require('html-pdf')
 
 class Aluno {
     
-    async inserir(nome,cpf,curso_id) {
+    async inserir(nome,cpf,curso_id,imagem_pessoa) {
         try {
-            await knex.insert({nome,cpf,curso_id}).table('aluno')
+            await knex.insert({nome,cpf,curso_id,imagem_pessoa}).table('aluno')
         } catch (error) {
             return { error: error }
         }
@@ -36,10 +36,6 @@ class Aluno {
         } catch (error) {
             return { errors: error }
         }
-    }
-
-    async gerarPdfAlunos(){
-        
     }
     
     async buscarPorId(id){
@@ -81,7 +77,7 @@ class Aluno {
         }
     }
 
-    async atualizar(id,nome,curso_id){      
+    async atualizar(id,nome,curso_id,imagem_pessoa){      
         let aluno = await this.buscarPorId(id)
         let editarAluno = {} 
         if(aluno.resultado != undefined){ 
@@ -90,6 +86,9 @@ class Aluno {
             }
             if(curso_id != undefined){
                 editarAluno.curso_id = curso_id
+            }
+            if(imagem_pessoa != undefined){
+                editarAluno.imagem_pessoa = imagem_pessoa
             }
         } else {
             return {status:false,errors:curso.errors}

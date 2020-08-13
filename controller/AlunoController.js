@@ -9,11 +9,7 @@ class AlunoController {
 
     async inserir(req, res) {
         let { nome, cpf, curso_id } = req.body
-
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
+        let imagem_pessoa = req.file.path
 
         if (!validarCpf(cpf)) {
             return res.status(400).json({ errors: 'Cpf inválido' });
@@ -25,7 +21,7 @@ class AlunoController {
             return res.status(400).json({ errors: 'Já tem este cpf cadastrado' });
         } else {
             if (curso.status) {
-                await Aluno.inserir(nome, cpf, curso.resultado.id)
+                await Aluno.inserir(nome, cpf, curso.resultado.id,imagem_pessoa)
                 res.status(200).json({ message: 'Cadastrado com sucesso' })
             } else {
                 res.status(404).json({ errors: curso.errors })
@@ -114,14 +110,10 @@ class AlunoController {
     async atualizar(req, res) {
         let id = req.params.id
         let { nome,curso_id } = req.body
-
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
+        let imagem_pessoa = req.file.path
 
         let curso = await Curso.buscarPorId(curso_id)
-        let aluno = await Aluno.atualizar(id, nome,curso.resultado.id)
+        let aluno = await Aluno.atualizar(id, nome,curso.resultado.id,imagem_pessoa)
         if (curso.status) {
             if(aluno != undefined){
                 if (aluno.status) {
